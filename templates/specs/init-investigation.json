@@ -3,7 +3,7 @@
   "type": "investigation",
   "created_at": "{{TIMESTAMP}}",
   "updated_at": "{{TIMESTAMP}}",
-  "language": "{{LANG_CODE}}",
+  "language": "zh",
   "status": "open",
   "conclusion": null,
   "is_bug": null,

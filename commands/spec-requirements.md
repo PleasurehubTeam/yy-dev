@@ -1,5 +1,5 @@
 ---
-description: Generate comprehensive EARS-format requirements for a specification
+description: 生成 EARS 格式需求文档
 argument-hint: <feature-name>
 ---
 

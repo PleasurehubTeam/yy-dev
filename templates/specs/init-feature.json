@@ -3,7 +3,7 @@
   "type": "feature",
   "created_at": "{{TIMESTAMP}}",
   "updated_at": "{{TIMESTAMP}}",
-  "language": "{{LANG_CODE}}",
+  "language": "zh",
   "status": "open",
   "size": null,
   "phase": "initialized",

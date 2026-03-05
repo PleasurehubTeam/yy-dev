@@ -36,7 +36,8 @@ Generate complete requirements for feature **$1** based on the project descripti
    - Create initial requirements based on project description
    - Group related functionality into logical requirement areas
    - Apply EARS format to all acceptance criteria
-   - Use language specified in spec.json
+   - Use language specified in spec.json (default: Simplified Chinese `zh`)
+   - **All document content MUST be written in the specified language** — section titles, descriptions, acceptance criteria, notes
 
 4. **Update Metadata**:
    - Set `phase: "requirements-generated"`
@@ -67,7 +68,7 @@ Generate complete requirements for feature **$1** based on the project descripti
 - **Missing Project Description**: If requirements.md lacks project description, ask user for feature details
 - **Ambiguous Requirements**: Propose initial version and iterate with user rather than asking many upfront questions
 - **Template Missing**: If template files don't exist, use inline fallback structure with warning
-- **Language Undefined**: Default to English (`en`) if spec.json doesn't specify language
+- **Language Undefined**: Default to Simplified Chinese (`zh`) if spec.json doesn't specify language
 - **Non-numeric Requirement Headings**: If existing headings do not include a leading numeric ID, normalize them to numeric IDs.
 
 ### Next Phase: Design Generation

@@ -1,5 +1,5 @@
 ---
-description: Analyze implementation gap between requirements and existing codebase
+description: 需求与代码的差距分析
 argument-hint: <feature-name>
 ---
 

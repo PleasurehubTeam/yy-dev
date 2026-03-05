@@ -1,5 +1,5 @@
 ---
-description: Show specification status and progress
+description: 查看规格状态和进度
 argument-hint: [spec-name]
 ---
 

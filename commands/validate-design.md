@@ -1,5 +1,5 @@
 ---
-description: Interactive technical design quality review and validation
+description: 技术设计质量评审（GO/NO-GO）
 argument-hint: <feature-name>
 ---
 

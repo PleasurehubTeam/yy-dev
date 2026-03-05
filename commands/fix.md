@@ -1,5 +1,5 @@
 ---
-description: Complete bugfix workflow — TDD fix with auto code review
+description: Bug 修复流程 — TDD 修复 + 自动代码审查
 argument-hint: <bug-description>
 ---
 

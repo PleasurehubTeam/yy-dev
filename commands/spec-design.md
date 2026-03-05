@@ -1,5 +1,5 @@
 ---
-description: Create comprehensive technical design for a specification
+description: 生成技术设计文档
 argument-hint: <feature-name> [-y]
 ---
 

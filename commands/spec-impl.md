@@ -1,5 +1,5 @@
 ---
-description: Execute spec tasks using TDD methodology
+description: 按 TDD 方法执行实现任务
 argument-hint: <feature-name> [task-numbers]
 ---
 

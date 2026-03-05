@@ -1,5 +1,5 @@
 ---
-description: Generate implementation tasks for a specification
+description: 生成实现任务列表
 argument-hint: <feature-name> [-y] [--sequential]
 ---
 

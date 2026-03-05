@@ -1,5 +1,5 @@
 ---
-description: Manage .yy-dev/steering/ as persistent project knowledge
+description: 管理项目记忆（steering）— 初始化或同步
 argument-hint: [sync]
 ---
 

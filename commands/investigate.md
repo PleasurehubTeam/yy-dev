@@ -1,5 +1,5 @@
 ---
-description: Systematic investigation workflow — diagnose issues with structured methodology
+description: 系统化问题调查 — 结构化方法诊断问题
 argument-hint: <issue-description>
 ---
 

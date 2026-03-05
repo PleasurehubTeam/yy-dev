@@ -65,7 +65,7 @@ Generate technical design document for feature **$1** based on approved requirem
 
 4. **Persist Findings to Research Log**:
    - Create or update `.yy-dev/specs/$1/research.md` using the shared template
-   - Use the language specified in spec.json
+   - Use the language specified in spec.json (default: Simplified Chinese `zh`)
 
 ### Step 3: Generate Design Document
 
@@ -78,7 +78,8 @@ Generate technical design document for feature **$1** based on approved requirem
    - **Integrate all discovery findings**
    - If existing design.md found, use it as reference context (merge mode)
    - Apply design rules: Type Safety, Visual Communication, Formal Tone
-   - Use language specified in spec.json
+   - Use language specified in spec.json (default: Simplified Chinese `zh`)
+   - **All document content MUST be written in the specified language** — section titles, architecture descriptions, interface definitions, notes
 
 3. **Update Metadata** in spec.json:
    - Set `phase: "design-generated"`

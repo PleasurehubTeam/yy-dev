@@ -3,7 +3,7 @@
   "type": "bugfix",
   "created_at": "{{TIMESTAMP}}",
   "updated_at": "{{TIMESTAMP}}",
-  "language": "{{LANG_CODE}}",
+  "language": "zh",
   "status": "open",
   "phase": "initialized",
   "approvals": {
