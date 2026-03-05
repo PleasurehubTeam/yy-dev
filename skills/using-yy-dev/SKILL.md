@@ -42,11 +42,11 @@ yy-dev provides structured development workflows with project memory (steering) 
 
 ## Skill Selection Guide
 
-- User says "add X" / "implement Y" / "build Z" → invoke `yy-dev:feature`
-- User says "fix" / "bug" / "broken" / "error" → invoke `yy-dev:fix`
-- User says "investigate" / "why" / "diagnose" / "debug" → invoke `yy-dev:investigate`
+- User says "add X" / "implement Y" / "build Z" → invoke `yy:feature`
+- User says "fix" / "bug" / "broken" / "error" → invoke `yy:fix`
+- User says "investigate" / "why" / "diagnose" / "debug" → invoke `yy:investigate`
 - User mentions "requirements" / "design" / "spec" → invoke the specific spec skill
-- User says "status" / "progress" → invoke `yy-dev:status`
+- User says "status" / "progress" → invoke `yy:status`
 
 ## Key Principle
 

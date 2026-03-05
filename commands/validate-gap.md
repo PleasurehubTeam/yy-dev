@@ -3,4 +3,4 @@ description: Analyze implementation gap between requirements and existing codeba
 argument-hint: <feature-name>
 ---
 
-Invoke the `yy-dev:validate-gap` skill to analyze the gap for feature $ARGUMENTS.
+Invoke the `yy:validate-gap` skill to analyze the gap for feature $ARGUMENTS.

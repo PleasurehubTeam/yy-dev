@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "yy-dev",
+      "name": "yy",
       "version": "0.1.0",
       "source": "./"
     }
