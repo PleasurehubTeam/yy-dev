@@ -8,8 +8,8 @@ Structured feature, bugfix, and investigation workflows with steering-based proj
 
 ```bash
 # Add marketplace and install
-/plugin marketplace add /path/to/yy-dev
-/plugin install yy-dev@yy-dev-local
+/plugin marketplace add PleasurehubTeam/yy-dev
+/plugin install yy-dev@yy-dev
 ```
 
 ## Quick Start
