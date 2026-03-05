@@ -1,107 +1,134 @@
 ---
 name: init
 description: Use when initializing a new project with yy-dev — creates .yy-dev/ directory and steering files
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, LS, AskUserQuestion, TaskCreate, TaskUpdate, TaskList
 ---
 
 # 项目初始化
 
-<background_information>
-**Mission**: Initialize a project for spec-driven development by creating `.yy-dev/` directory structure and generating steering files.
+## Overview
 
-**Success Criteria**:
-- `.yy-dev/` directory created with proper structure
-- Steering files (product.md, tech.md, structure.md) generated from project analysis
-- User can immediately start using `/yy:feature`, `/yy:fix`, etc.
-</background_information>
+通过交互式对话理解项目需求，生成高质量的 steering 项目记忆，为后续开发奠定基础。
 
-<instructions>
-## Core Task
-Initialize yy-dev for the current project based on **$ARGUMENTS** (project description).
+先理解，再生成。一次问一个问题，逐步深入。
 
-**All generated steering content MUST be in Simplified Chinese (简体中文).**
+<HARD-GATE>
+在完成所有澄清问答之前，绝对不可以生成任何 steering 文件（product.md, tech.md, structure.md）。
+不论项目看起来多简单，都必须至少问 2 个澄清问题。
+这条规则没有例外。
+</HARD-GATE>
 
-## Execution Steps
+## Anti-Pattern: "这个项目很简单，不需要问"
 
-### Step 1: Check Prerequisites
-- Check if `.yy-dev/` already exists
-- If exists with steering: Warn user and ask if they want to regenerate
-- If exists without steering: Continue with steering generation
+每个项目都必须经过问答流程。计算器、todo list、单个工具函数 — 都一样。
+"简单"的项目正是未经检验的假设最容易浪费工作的地方。
+问答可以短（真正简单的项目 2 个问题就够），但你必须问并等待回答。
 
-### Step 2: Create Directory Structure
+## Checklist
+
+You MUST create a task for each of these items and complete them in order:
+
+1. **检查项目状态** — 检查 `.yy-dev/` 是否已存在，扫描项目文件
+2. **第一轮澄清** — 问第一个关键问题（产品定位/核心差异化/目标用户），等待回答
+3. **第二轮澄清** — 根据回答问第二个问题（技术偏好/功能范围/设计风格），等待回答
+4. **第三轮澄清（可选）** — 如果仍有重要不确定点，再问一个，否则跳过
+5. **生成 steering** — 读取模板和原则，生成三个文件到 `.yy-dev/steering/`
+6. **用户确认** — 展示 steering 摘要，确认是否需要调整
+
+## Process Flow
+
+```dot
+digraph init {
+    "检查项目状态" [shape=box];
+    "问第一个问题" [shape=box];
+    "等待用户回答" [shape=diamond];
+    "问第二个问题" [shape=box];
+    "等待用户回答2" [shape=diamond];
+    "需要第三个问题?" [shape=diamond];
+    "问第三个问题" [shape=box];
+    "读取模板和原则" [shape=box];
+    "生成 steering 文件" [shape=box];
+    "展示摘要等确认" [shape=doublecircle];
+
+    "检查项目状态" -> "问第一个问题";
+    "问第一个问题" -> "等待用户回答";
+    "等待用户回答" -> "问第二个问题" [label="回答"];
+    "问第二个问题" -> "等待用户回答2";
+    "等待用户回答2" -> "需要第三个问题?" [label="回答"];
+    "需要第三个问题?" -> "问第三个问题" [label="是"];
+    "需要第三个问题?" -> "读取模板和原则" [label="否"];
+    "问第三个问题" -> "读取模板和原则";
+    "读取模板和原则" -> "生成 steering 文件";
+    "生成 steering 文件" -> "展示摘要等确认";
+}
 ```
-.yy-dev/
-├── steering/
-└── specs/
+
+## Execution Details
+
+### Step 1: 检查项目状态
+
+- 检查 `.yy-dev/` 是否已存在
+- 如果存在且有 steering：警告用户，问是否重新生成
+- `Glob` 扫描项目文件（package.json, README, 源代码等）
+- 空项目 → greenfield 模式；有代码 → brownfield 模式
+
+### Step 2-4: 交互式澄清
+
+**每次只问一个问题，等待回答后再问下一个。**
+
+问题方向（根据上下文选择最重要的）：
+
+- **产品方向**: 核心差异化是什么？解决什么问题？目标用户是谁？
+- **技术偏好**: 有没有技术栈偏好？有没有约束（浏览器兼容性、性能要求）？
+- **功能范围**: MVP 包含哪些核心功能？哪些是 P0 vs P1？
+- **设计风格**: 视觉/交互有什么偏好？有参考产品吗？
+- **集成需求**: 需要对接什么外部服务/API？
+
+**提问技巧**:
+- 优先用选择题（给 2-3 个选项 + "其他"）
+- 结合用户的描述追问，不要问泛泛的问题
+- 体现你对领域的理解，给出专业建议
+
+### Step 5: 生成 Steering
+
+**只有在完成至少 2 轮问答后才能执行此步骤。**
+
+1. 创建目录结构：
+```bash
+mkdir -p .yy-dev/steering .yy-dev/specs
 ```
 
-### Step 3: Interactive Clarification (MANDATORY)
+2. 读取模板：
+   - `${CLAUDE_PLUGIN_ROOT}/templates/steering/product.md`
+   - `${CLAUDE_PLUGIN_ROOT}/templates/steering/tech.md`
+   - `${CLAUDE_PLUGIN_ROOT}/templates/steering/structure.md`
+   - `${CLAUDE_PLUGIN_ROOT}/templates/rules/steering-principles.md`
 
-**DO NOT skip this step. DO NOT generate steering directly from the description alone.**
+3. 生成三个文件到 **`.yy-dev/steering/`** 目录（不是 `.yy-dev/` 根目录）：
+   - `.yy-dev/steering/product.md` — 产品定位、目标用户、核心价值、差异化
+   - `.yy-dev/steering/tech.md` — 技术栈、架构决策、开发规范
+   - `.yy-dev/steering/structure.md` — 项目结构、目录组织、命名约定
 
-Before generating any steering files, you MUST ask clarifying questions ONE AT A TIME:
+4. **所有内容必须是简体中文**
 
-1. **First question**: Based on the user's description, ask about the most important unclear aspect (e.g., target users, core differentiator, tech preferences)
-2. **Wait for answer**, then ask the next question if needed
-3. **Maximum 3 questions** — stop if you have enough context
+### Step 6: 展示摘要并确认
 
-Example flow:
-- User: "搞一个 web 版本的计算器，要有创意的"
-- Q1: "你希望这个计算器的「创意」体现在哪方面？比如：视觉设计（3D/动画）、交互方式（手势/语音）、功能（科学计算/单位换算/图形化），还是其他？"
-- User answers...
-- Q2: "技术栈有偏好吗？纯 HTML/CSS/JS，还是用 React/Vue 等框架？"
-- User answers...
-- Proceed to Step 4
+展示生成的 steering 摘要，问用户是否需要调整。
 
-### Step 4: Scan Codebase (if not empty)
-- `Glob` for source files and config
-- `Read` README, package.json, pyproject.toml, etc.
-- `Grep` for framework patterns
-- Skip this step for empty/greenfield projects
+## After Initialization
 
-### Step 5: Generate Steering
-
-1. Read steering templates from `${CLAUDE_PLUGIN_ROOT}/templates/steering/`
-2. Read steering principles from `${CLAUDE_PLUGIN_ROOT}/templates/rules/steering-principles.md`
-3. Generate three steering files **entirely in Simplified Chinese**:
-   - `product.md`: 产品定位、目标用户、核心价值
-   - `tech.md`: 技术栈、开发规范、约束条件
-   - `structure.md`: 项目结构、目录组织、命名约定
-4. Present summary for user review
-
-### Step 6: Offer Next Steps
-
-Present ONLY these valid commands:
+**只建议以下真实存在的命令：**
 - `/yy:feature "描述"` — 直接开始实现功能
 - `/yy:spec-requirements <名称>` — 走正式需求规格流程
+- `/yy:fix "描述"` — 修复 bug
 
-**DO NOT suggest commands that don't exist** (e.g., `/yy:brainstorming` does NOT exist).
+**绝对不要建议不存在的命令**（如 `/yy:brainstorming` 不存在）。
+如果觉得用户需要头脑风暴，直接说"我们可以先讨论一下具体方案"，不要引用不存在的命令。
 
-## Critical Constraints
-- **Interactive**: Ask clarifying questions BEFORE generating, one at a time, max 3 questions
-- **Language**: All steering content in Simplified Chinese (简体中文)
-- **Pattern-focused**: Document patterns, not exhaustive lists (follow steering principles)
-- **Security**: Never include secrets, keys, or credentials in steering
-- **Preserve existing**: If regenerating, preserve user customizations
-- **Valid commands only**: Only suggest `/yy:*` commands that actually exist
-</instructions>
+## Key Principles
 
-## Tool Guidance
-- **Glob**: Find source files, configs, package files
-- **Read**: Examine README, package.json, steering templates
-- **Grep**: Search for framework patterns, import conventions
-- **Write**: Create steering files
-
-## Output Description
-```
-✅ 项目已初始化
-
-## Steering 已创建：
-- product.md: [简述]
-- tech.md: [技术栈概要]
-- structure.md: [项目结构]
-
-## 下一步：
-- /yy:feature "描述" — 实现一个功能
-- /yy:fix "描述" — 修复一个 bug
-- /yy:spec-requirements <名称> — 正式需求规格流程
-```
+- **一次一个问题** — 不要一次问多个问题
+- **选择题优先** — 比开放式问题更容易回答
+- **YAGNI** — 不要在 steering 里规划过多未确定的功能
+- **模式而非清单** — 记录架构模式，不是文件列表
+- **安全** — 绝不在 steering 里包含密钥、密码等敏感信息
