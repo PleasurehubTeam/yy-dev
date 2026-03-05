@@ -1,0 +1,10 @@
+{
+  "name": "yy-dev",
+  "version": "0.1.0",
+  "description": "Spec-driven development workflow plugin — structured feature, bugfix, and investigation workflows with steering-based project memory",
+  "author": {
+    "name": "gotalab"
+  },
+  "license": "MIT",
+  "keywords": ["spec-driven", "tdd", "steering", "workflow", "development"]
+}

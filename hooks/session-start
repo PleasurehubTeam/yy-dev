@@ -1,0 +1,28 @@
+#!/bin/sh
+# yy-dev session-start hook
+# Detects .yy-dev/steering/ and injects context or initialization prompt
+
+YY_DIR=".yy-dev"
+STEERING_DIR="${YY_DIR}/steering"
+
+if [ -d "${STEERING_DIR}" ] && [ "$(ls -A "${STEERING_DIR}" 2>/dev/null)" ]; then
+  # Steering exists — inject summary
+  echo "<yy-dev-context>"
+  echo "Project has yy-dev steering initialized."
+  echo ""
+  echo "Steering files:"
+  for f in "${STEERING_DIR}"/*.md; do
+    if [ -f "$f" ]; then
+      basename "$f"
+    fi
+  done
+  echo ""
+  echo "Use /yy:status to check spec progress, /yy:feature or /yy:fix to start work."
+  echo "</yy-dev-context>"
+else
+  # No steering — suggest init
+  echo "<yy-dev-context>"
+  echo "yy-dev plugin active but project not initialized."
+  echo "Run /yy:init to set up project steering (product, tech, structure context)."
+  echo "</yy-dev-context>"
+fi

@@ -1,0 +1,10 @@
+{
+  "name": "yy-dev-local",
+  "plugins": [
+    {
+      "name": "yy-dev",
+      "version": "0.1.0",
+      "source": "./"
+    }
+  ]
+}

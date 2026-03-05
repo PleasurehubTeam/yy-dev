@@ -1,0 +1,23 @@
+#!/bin/sh
+# yy-dev stop hook
+# Checks if project steering should be updated based on session changes
+
+YY_DIR=".yy-dev"
+STEERING_DIR="${YY_DIR}/steering"
+
+# Only run if steering exists
+if [ -d "${STEERING_DIR}" ] && [ "$(ls -A "${STEERING_DIR}" 2>/dev/null)" ]; then
+  # Check if there are changes that might affect steering
+  if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    # Use git status --porcelain for accurate, deduplicated file count
+    # This covers staged, unstaged, and untracked files without double-counting
+    TOTAL=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+
+    if [ "$TOTAL" -gt 5 ]; then
+      echo "<yy-dev-stop>"
+      echo "Significant changes detected ($TOTAL files affected)."
+      echo "Consider running /yy:steering sync to update project memory if architectural or structural changes were made."
+      echo "</yy-dev-stop>"
+    fi
+  fi
+fi
