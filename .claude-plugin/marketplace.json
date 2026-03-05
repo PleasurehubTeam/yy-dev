@@ -1,5 +1,8 @@
 {
   "name": "yy-dev",
+  "owner": {
+    "name": "PleasurehubTeam"
+  },
   "plugins": [
     {
       "name": "yy-dev",
