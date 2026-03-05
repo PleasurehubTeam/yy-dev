@@ -18,6 +18,8 @@ description: Use when diagnosing issues — 4-phase systematic investigation wit
 ## Core Task
 Investigate the issue described in **$ARGUMENTS** using a 4-phase systematic debugging methodology.
 
+**All generated documents (investigation.md) MUST be written in Simplified Chinese (简体中文).**
+
 ## Execution Steps
 
 ### Step 1: Check Prerequisites
@@ -30,7 +32,7 @@ Investigate the issue described in **$ARGUMENTS** using a 4-phase systematic deb
 2. Check `.yy-dev/specs/` for naming conflicts
 3. Create directory: `.yy-dev/specs/investigate-<name>/`
 4. Read template `${CLAUDE_PLUGIN_ROOT}/templates/specs/init-investigation.json`
-   - Replace `{{FEATURE_NAME}}`, `{{TIMESTAMP}}`, `{{LANG_CODE}}`
+   - Replace `{{FEATURE_NAME}}`, `{{TIMESTAMP}}`; language defaults to `zh`
    - Write as `spec.json`
 5. Read template `${CLAUDE_PLUGIN_ROOT}/templates/specs/investigation.md`
    - Fill in issue description from $ARGUMENTS

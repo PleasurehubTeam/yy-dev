@@ -67,7 +67,8 @@ For each task, verify:
 
 ### 4. Generate Report
 
-Provide summary in the language specified in spec.json:
+Provide summary in the language specified in spec.json (default: Simplified Chinese `zh`).
+**All validation output MUST be written in the specified language.**
 - Validation summary by feature
 - Coverage report (tasks, requirements, design)
 - Issues and deviations with severity (Critical/Warning)

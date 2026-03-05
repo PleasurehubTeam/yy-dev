@@ -18,6 +18,8 @@ description: Use when implementing a new feature — auto-sizes and routes to di
 ## Core Task
 Implement the feature described in **$ARGUMENTS**, automatically choosing the right approach based on feature size.
 
+**All generated documents (requirements.md, design.md, research.md, changelog.md) MUST be written in Simplified Chinese (简体中文).**
+
 ## Execution Steps
 
 ### Step 1: Check Prerequisites
@@ -30,7 +32,7 @@ Implement the feature described in **$ARGUMENTS**, automatically choosing the ri
 2. Check `.yy-dev/specs/` for naming conflicts
 3. Create directory: `.yy-dev/specs/<feature-name>/`
 4. Read template `${CLAUDE_PLUGIN_ROOT}/templates/specs/init-feature.json`
-   - Replace `{{FEATURE_NAME}}`, `{{TIMESTAMP}}`, `{{LANG_CODE}}`
+   - Replace `{{FEATURE_NAME}}`, `{{TIMESTAMP}}`; language defaults to `zh`
    - Write as `spec.json`
 5. Write `requirements.md` with the feature description and initial requirements
 

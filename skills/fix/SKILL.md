@@ -19,6 +19,8 @@ description: Use when fixing a bug — TDD bugfix workflow with auto code review
 ## Core Task
 Fix the bug described in **$ARGUMENTS** using a complete TDD workflow with automatic code review.
 
+**All generated documents (investigation.md, fix-summary.md, changelog.md) MUST be written in Simplified Chinese (简体中文).**
+
 ## Execution Steps
 
 ### Step 1: Check Prerequisites
@@ -31,7 +33,7 @@ Fix the bug described in **$ARGUMENTS** using a complete TDD workflow with autom
 2. Check `.yy-dev/specs/` for naming conflicts (append number suffix if needed)
 3. Create directory: `.yy-dev/specs/fix-<name>/`
 4. Read template `${CLAUDE_PLUGIN_ROOT}/templates/specs/init-bugfix.json`
-   - Replace `{{FEATURE_NAME}}`, `{{TIMESTAMP}}`, `{{LANG_CODE}}`
+   - Replace `{{FEATURE_NAME}}`, `{{TIMESTAMP}}`; language defaults to `zh`
    - Write as `spec.json`
 5. Read template `${CLAUDE_PLUGIN_ROOT}/templates/specs/investigation.md`
    - Fill in bug description from $ARGUMENTS

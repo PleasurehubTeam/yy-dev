@@ -40,7 +40,8 @@ Generate implementation tasks for feature **$1** based on approved requirements 
 - Read `${CLAUDE_PLUGIN_ROOT}/templates/specs/tasks.md` for format (supports `(P)` markers)
 
 **Generate task list following all rules**:
-- Use language specified in spec.json
+- Use language specified in spec.json (default: Simplified Chinese `zh`)
+- **All document content MUST be written in the specified language**
 - Map all requirements to tasks
 - When documenting requirement coverage, list numeric requirement IDs only (comma-separated)
 - Ensure all design components included

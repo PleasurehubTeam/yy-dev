@@ -27,6 +27,8 @@ Check `.yy-dev/steering/` status:
 **Bootstrap Mode**: Empty OR missing core files (product.md, tech.md, structure.md)
 **Sync Mode**: All core files exist
 
+**All generated steering content MUST be written in Simplified Chinese (简体中文).**
+
 ---
 
 ## Bootstrap Flow

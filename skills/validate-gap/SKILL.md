@@ -33,7 +33,8 @@ Analyze implementation gap for feature **$1** based on approved requirements and
    - Analyze existing codebase using Grep and Read tools
    - Use WebSearch/WebFetch for external dependency research if needed
    - Evaluate multiple implementation approaches (extend/new/hybrid)
-   - Use language specified in spec.json for output
+   - Use language specified in spec.json for output (default: Simplified Chinese `zh`)
+   - **All analysis content MUST be written in the specified language**
 
 4. **Generate Analysis Document**:
    - Create comprehensive gap analysis following the output guidelines

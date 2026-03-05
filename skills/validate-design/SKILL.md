@@ -33,7 +33,8 @@ Interactive design quality review for feature **$1** based on approved requireme
    - Follow design-review.md process: Analysis → Critical Issues → Strengths → GO/NO-GO
    - Limit to 3 most important concerns
    - Engage interactively with user
-   - Use language specified in spec.json
+   - Use language specified in spec.json (default: Simplified Chinese `zh`)
+   - **All review output MUST be written in the specified language**
 
 4. **Provide Decision and Next Steps**:
    - Clear GO/NO-GO decision with rationale
