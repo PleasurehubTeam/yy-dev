@@ -3,7 +3,7 @@ name: init
 description: Use when initializing a new project with yy-dev — creates .yy-dev/ directory and steering files
 ---
 
-# Project Initialization
+# 项目初始化
 
 <background_information>
 **Mission**: Initialize a project for spec-driven development by creating `.yy-dev/` directory structure and generating steering files.
@@ -18,6 +18,8 @@ description: Use when initializing a new project with yy-dev — creates .yy-dev
 ## Core Task
 Initialize yy-dev for the current project based on **$ARGUMENTS** (project description).
 
+**All generated steering content MUST be in Simplified Chinese (简体中文).**
+
 ## Execution Steps
 
 ### Step 1: Check Prerequisites
@@ -29,44 +31,58 @@ Initialize yy-dev for the current project based on **$ARGUMENTS** (project descr
 ```
 .yy-dev/
 ├── steering/
-├── specs/
-└── config/
+└── specs/
 ```
 
-### Step 3: Generate Steering
+### Step 3: Interactive Clarification (MANDATORY)
 
-**With Input** ($ARGUMENTS provided):
-1. Analyze the project description
-2. Ask ONE clarifying question at a time (interactive, not a batch questionnaire)
-3. Scan codebase for existing patterns:
-   - `Glob` for source files and config
-   - `Read` README, package.json, pyproject.toml, etc.
-   - `Grep` for framework patterns
-4. Read steering templates from `${CLAUDE_PLUGIN_ROOT}/templates/steering/`
-5. Read steering principles from `${CLAUDE_PLUGIN_ROOT}/templates/rules/steering-principles.md`
-6. Generate three steering files:
-   - `product.md`: Purpose, capabilities, value proposition
-   - `tech.md`: Stack, standards, conventions
-   - `structure.md`: Organization, naming, imports
-7. Present summary for user review
+**DO NOT skip this step. DO NOT generate steering directly from the description alone.**
 
-**Without Input** (brownfield):
-1. Scan codebase comprehensively:
-   - README, configs, source files
-   - Framework detection, build tools
-   - Directory patterns, naming conventions
-2. Infer steering from code analysis
-3. Present inferred steering for user confirmation
-4. Allow corrections before writing files
+Before generating any steering files, you MUST ask clarifying questions ONE AT A TIME:
 
-### Step 4: Offer Next Steps
-- Ask: "Would you like to start with a feature (`/yy:feature`) or set up formal requirements (`/yy:spec-requirements`)?"
+1. **First question**: Based on the user's description, ask about the most important unclear aspect (e.g., target users, core differentiator, tech preferences)
+2. **Wait for answer**, then ask the next question if needed
+3. **Maximum 3 questions** — stop if you have enough context
+
+Example flow:
+- User: "搞一个 web 版本的计算器，要有创意的"
+- Q1: "你希望这个计算器的「创意」体现在哪方面？比如：视觉设计（3D/动画）、交互方式（手势/语音）、功能（科学计算/单位换算/图形化），还是其他？"
+- User answers...
+- Q2: "技术栈有偏好吗？纯 HTML/CSS/JS，还是用 React/Vue 等框架？"
+- User answers...
+- Proceed to Step 4
+
+### Step 4: Scan Codebase (if not empty)
+- `Glob` for source files and config
+- `Read` README, package.json, pyproject.toml, etc.
+- `Grep` for framework patterns
+- Skip this step for empty/greenfield projects
+
+### Step 5: Generate Steering
+
+1. Read steering templates from `${CLAUDE_PLUGIN_ROOT}/templates/steering/`
+2. Read steering principles from `${CLAUDE_PLUGIN_ROOT}/templates/rules/steering-principles.md`
+3. Generate three steering files **entirely in Simplified Chinese**:
+   - `product.md`: 产品定位、目标用户、核心价值
+   - `tech.md`: 技术栈、开发规范、约束条件
+   - `structure.md`: 项目结构、目录组织、命名约定
+4. Present summary for user review
+
+### Step 6: Offer Next Steps
+
+Present ONLY these valid commands:
+- `/yy:feature "描述"` — 直接开始实现功能
+- `/yy:spec-requirements <名称>` — 走正式需求规格流程
+
+**DO NOT suggest commands that don't exist** (e.g., `/yy:brainstorming` does NOT exist).
 
 ## Critical Constraints
-- **Interactive**: One question at a time, not batch questionnaires
+- **Interactive**: Ask clarifying questions BEFORE generating, one at a time, max 3 questions
+- **Language**: All steering content in Simplified Chinese (简体中文)
 - **Pattern-focused**: Document patterns, not exhaustive lists (follow steering principles)
 - **Security**: Never include secrets, keys, or credentials in steering
 - **Preserve existing**: If regenerating, preserve user customizations
+- **Valid commands only**: Only suggest `/yy:*` commands that actually exist
 </instructions>
 
 ## Tool Guidance
@@ -77,15 +93,15 @@ Initialize yy-dev for the current project based on **$ARGUMENTS** (project descr
 
 ## Output Description
 ```
-✅ Project Initialized
+✅ 项目已初始化
 
-## Steering Created:
-- product.md: [Brief description]
-- tech.md: [Key stack summary]
-- structure.md: [Organization pattern]
+## Steering 已创建：
+- product.md: [简述]
+- tech.md: [技术栈概要]
+- structure.md: [项目结构]
 
-## Next Steps:
-- /yy:feature "description" — implement a feature
-- /yy:fix "description" — fix a bug
-- /yy:spec-requirements <name> — formal spec pipeline
+## 下一步：
+- /yy:feature "描述" — 实现一个功能
+- /yy:fix "描述" — 修复一个 bug
+- /yy:spec-requirements <名称> — 正式需求规格流程
 ```
