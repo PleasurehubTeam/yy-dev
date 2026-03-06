@@ -1,28 +1,77 @@
 #!/bin/sh
 # yy-dev session-start hook
-# Detects .yy-dev/steering/ and injects context or initialization prompt
+# Injects project context and workflow guidance into Claude's context
 
 YY_DIR=".yy-dev"
 STEERING_DIR="${YY_DIR}/steering"
+SPECS_DIR="${YY_DIR}/specs"
+
+echo "<yy-dev-context>"
+echo "# yy-dev 规格驱动开发"
+echo ""
 
 if [ -d "${STEERING_DIR}" ] && [ "$(ls -A "${STEERING_DIR}" 2>/dev/null)" ]; then
-  # Steering exists — inject summary
-  echo "<yy-dev-context>"
-  echo "Project has yy-dev steering initialized."
+  # === Steering exists — inject full context ===
+  echo "## 项目路径"
+  echo "- Steering: \`${STEERING_DIR}/\`"
+  echo "- Specs: \`${SPECS_DIR}/\`"
   echo ""
-  echo "Steering files:"
+
+  echo "## Steering（项目记忆）"
   for f in "${STEERING_DIR}"/*.md; do
     if [ -f "$f" ]; then
-      basename "$f"
+      echo "### $(basename "$f")"
+      cat "$f"
+      echo ""
     fi
   done
+
+  echo "## 活跃规格"
+  if [ -d "${SPECS_DIR}" ] && [ "$(ls -A "${SPECS_DIR}" 2>/dev/null)" ]; then
+    for spec_dir in "${SPECS_DIR}"/*/; do
+      if [ -f "${spec_dir}spec.json" ]; then
+        spec_name=$(basename "$spec_dir")
+        status=$(grep -o '"status"[[:space:]]*:[[:space:]]*"[^"]*"' "${spec_dir}spec.json" | head -1 | sed 's/.*"\([^"]*\)"/\1/')
+        type=$(grep -o '"type"[[:space:]]*:[[:space:]]*"[^"]*"' "${spec_dir}spec.json" | head -1 | sed 's/.*"\([^"]*\)"/\1/')
+        phase=$(grep -o '"phase"[[:space:]]*:[[:space:]]*"[^"]*"' "${spec_dir}spec.json" | head -1 | sed 's/.*"\([^"]*\)"/\1/')
+        echo "- **${spec_name}** (${type}) — 状态: ${status}, 阶段: ${phase}"
+      fi
+    done
+  else
+    echo "- 暂无活跃规格"
+  fi
   echo ""
-  echo "Use /yy:status to check spec progress, /yy:feature or /yy:fix to start work."
-  echo "</yy-dev-context>"
+
+  echo "## 工作流"
+  echo ""
+  echo "### 自动工作流（端到端，自动闭合）"
+  echo "- \`/yy:feature \"描述\"\` — 新功能 → 自动评估规模 → 小: 直接 TDD 实现 / 大: 生成计划"
+  echo "- \`/yy:fix \"描述\"\` — 已知 Bug → TDD 修复 → 代码审查 → 更新规格"
+  echo "- \`/yy:investigate \"描述\"\` — 不确定问题 → 系统化诊断 → 结论 → 可转为修复"
+  echo "- \`/yy:steering\` — 同步项目记忆（检测代码漂移）"
+  echo "- \`/yy:status [spec]\` — 查看规格状态和进度"
+  echo ""
+  echo "### 正式流水线（逐步控制）"
+  echo "- \`/yy:spec-requirements <名称>\` — 生成需求文档"
+  echo "- \`/yy:spec-design <名称>\` — 生成技术设计"
+  echo "- \`/yy:spec-tasks <名称>\` — 分解实现任务"
+  echo "- \`/yy:spec-impl <名称>\` — TDD 执行实现"
+  echo "- \`/yy:validate-gap <名称>\` — 需求与代码差距分析"
+  echo "- \`/yy:validate-design <名称>\` — 设计质量评审"
+  echo "- \`/yy:validate-impl <名称>\` — 实现验证"
+  echo ""
+  echo "## 开发规则"
+  echo "- 自动工作流命令（feature/fix/investigate）会自动创建 spec 目录"
+  echo "- 正式流水线命令需要已有 spec — 先用 \`/yy:feature\` 或手动创建"
+  echo "- 自动工作流完成后会自动进行代码审查 + 更新 changelog"
+  echo "- 加载整个 \`${STEERING_DIR}/\` 作为项目记忆"
+  echo "- 遵循用户指令，在指令范围内自主行动，仅在缺少关键信息时提问"
+
 else
-  # No steering — suggest init
-  echo "<yy-dev-context>"
-  echo "yy-dev plugin active but project not initialized."
-  echo "Run /yy:init to set up project steering (product, tech, structure context)."
-  echo "</yy-dev-context>"
+  # === No steering — suggest init ===
+  echo "yy-dev 插件已激活，但项目尚未初始化。"
+  echo ""
+  echo "运行 \`/yy:init \"项目描述\"\` 来设置项目 steering（产品、技术、结构记忆）。"
 fi
+
+echo "</yy-dev-context>"
