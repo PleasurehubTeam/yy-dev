@@ -6,8 +6,12 @@
   "plugins": [
     {
       "name": "yy",
+      "description": "Spec-driven development workflow plugin — structured feature, bugfix, and investigation workflows with steering-based project memory",
       "version": "0.1.0",
-      "source": "./"
+      "source": "./",
+      "author": {
+        "name": "gotalab"
+      }
     }
   ]
 }

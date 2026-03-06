@@ -1,7 +1,6 @@
 ---
 name: init
 description: Use when initializing a new project with yy-dev — creates .yy-dev/ directory and steering files
-allowed-tools: Bash, Read, Write, Edit, Glob, Grep, LS, AskUserQuestion, TaskCreate, TaskUpdate, TaskList
 ---
 
 # 项目初始化
