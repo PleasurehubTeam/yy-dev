@@ -99,13 +99,22 @@ mkdir -p .yy-dev/steering .yy-dev/specs
 4. **所有内容必须是简体中文**
 5. **文件名必须是 product.md、tech.md、structure.md** — 不是其他名字
 
-### Phase 4: 确认和收尾
+### Phase 4: 确认 + 称呼 + CLAUDE.md（必须完成，不可跳过）
 
-1. 展示 steering 摘要，用多选题问用户是否需要调整
-2. 用多选题问用户称呼（Prefer multiple choice）：
-   - 选项："baby（默认）"、"自定义输入"
-   - 默认/不回答 → 使用 "baby"
-- 写入 `.yy-dev/steering/user.md`：
+<HARD-GATE>
+生成 steering 文件后，你还有 3 件事必须做。如果你跳过任何一件就提示"下一步"，你就失败了。
+必须按顺序完成：Step A → Step B → Step C → 然后才能进入 Phase 5。
+</HARD-GATE>
+
+**Step A: 展示摘要并确认**
+- 展示 steering 摘要表格
+- 用多选题问用户是否需要调整
+
+**Step B: 询问用户称呼**
+- 用多选题问用户怎么称呼（Prefer multiple choice）
+- 选项："baby（默认）"、"自定义输入"
+- 用户不回答或选默认 → 使用 "baby"
+- 将称呼写入 `.yy-dev/steering/user.md`：
 
 ```markdown
 # 用户偏好
@@ -114,7 +123,10 @@ mkdir -p .yy-dev/steering .yy-dev/specs
 baby
 ```
 
-3. 在项目根目录生成 `CLAUDE.md`（已存在则追加，用 `---` 分隔）：
+**Step C: 生成 CLAUDE.md**
+- 在项目根目录生成 `CLAUDE.md`（已存在则追加，用 `---` 分隔）
+- 将 `{nickname}` 替换为 Step B 中获得的实际称呼
+- 内容如下：
 
 ```markdown
 # yy-dev 规格驱动开发
@@ -146,7 +158,7 @@ baby
 - 遵循用户指令，自主行动，仅在缺少关键信息时提问
 ```
 
-### Phase 5: 完成
+### Phase 5: 完成（仅在 Phase 4 的 Step A/B/C 全部完成后）
 
 **只建议以下真实存在的命令：**
 - `/yy:feature "描述"` — 直接开始实现功能
