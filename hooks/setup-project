@@ -1,0 +1,58 @@
+#!/bin/sh
+# yy-dev setup-project
+# Creates project directory structure, user.md, and CLAUDE.md
+# Called by init skill instead of plain mkdir
+
+YY_DIR=".yy-dev"
+STEERING_DIR="${YY_DIR}/steering"
+SPECS_DIR="${YY_DIR}/specs"
+
+# 1. Create directories
+mkdir -p "${STEERING_DIR}" "${SPECS_DIR}"
+
+# 2. Create user.md with default nickname
+if [ ! -f "${STEERING_DIR}/user.md" ]; then
+  cat > "${STEERING_DIR}/user.md" << 'EOF'
+# 用户偏好
+
+## 称呼
+baby
+EOF
+  echo "Created ${STEERING_DIR}/user.md (默认称呼: baby)"
+fi
+
+# 3. Create CLAUDE.md at project root
+if [ ! -f "CLAUDE.md" ]; then
+  cat > "CLAUDE.md" << 'EOF'
+# yy-dev 规格驱动开发
+
+## 用户称呼
+称呼用户为：baby
+
+## 项目记忆
+- Steering: `.yy-dev/steering/` — 加载全部文件作为项目上下文
+- Specs: `.yy-dev/specs/` — 查看活跃规格
+
+## 工作流
+
+### 自动工作流（端到端）
+- `/yy:feature "描述"` — 新功能（自动评估规模 → TDD 实现或生成计划）
+- `/yy:fix "描述"` — Bug 修复（TDD + 代码审查）
+- `/yy:investigate "描述"` — 问题调查（系统化诊断）
+- `/yy:steering` — 同步项目记忆
+- `/yy:status [spec]` — 查看规格状态
+
+### 正式流水线（逐步控制）
+- `/yy:spec-requirements <名称>` → `/yy:spec-design` → `/yy:spec-tasks` → `/yy:spec-impl`
+- `/yy:validate-gap` / `/yy:validate-design` / `/yy:validate-impl`
+
+## 开发规则
+- 自动工作流命令（feature/fix/investigate）会自动创建 spec 目录
+- 正式流水线需要已有 spec
+- 完成后自动代码审查 + 更新 changelog
+- 遵循用户指令，自主行动，仅在缺少关键信息时提问
+EOF
+  echo "Created CLAUDE.md"
+fi
+
+echo "Project structure ready."

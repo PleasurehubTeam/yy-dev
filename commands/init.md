@@ -23,6 +23,5 @@ $ARGUMENTS 是项目描述，不是让你去实现的需求。你的任务是理
 然后调用 yy:init skill 并严格按照其中的流程执行：
 1. 检查项目状态（不写文件）
 2. 问至少 2 个澄清问题（一次一个，用多选题，等回答）
-3. 生成 3 个 steering 文件到 `.yy-dev/steering/`
-
-注意：user.md 和 CLAUDE.md 会由 session-start hook 自动创建，init 不需要处理。
+3. 执行 `sh '${CLAUDE_PLUGIN_ROOT}/hooks/setup-project'` 创建目录结构
+4. 生成 3 个 steering 文件到 `.yy-dev/steering/`

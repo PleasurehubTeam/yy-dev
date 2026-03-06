@@ -40,7 +40,10 @@ You MUST create a task for each of these items and complete them in order:
 
 ## Phase 3: 生成 Steering（仅在 Phase 2 完成后）
 
-1. 执行 `mkdir -p .yy-dev/steering .yy-dev/specs`
+1. 执行项目初始化脚本（创建目录 + user.md + CLAUDE.md）：
+```bash
+sh '${CLAUDE_PLUGIN_ROOT}/hooks/setup-project'
+```
 
 2. 读取模板：
    - `${CLAUDE_PLUGIN_ROOT}/templates/steering/product.md`
