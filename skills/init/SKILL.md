@@ -59,6 +59,9 @@ You MUST create a task for each of these items and complete them in order:
 
 **每次只问一个问题。问完等用户回答后再问下一个。**
 
+**Prefer multiple choice questions when possible, but open-ended is fine too.**
+**Only one question per message** — if a topic needs more exploration, break it into multiple questions.
+
 问题方向（根据上下文选择最相关的）：
 
 - **产品方向**: 核心差异化是什么？解决什么问题？目标用户是谁？
@@ -68,7 +71,8 @@ You MUST create a task for each of these items and complete them in order:
 - **集成需求**: 外部服务/API？
 
 **提问技巧**:
-- 优先用选择题（给 2-3 个选项 + "其他"）
+- 优先用多选题 — 给 2-3 个选项，让用户直接选择
+- 每个选项包含简短描述，帮助用户理解选择的含义
 - 结合用户的描述追问，不要问泛泛的问题
 - 体现你对领域的理解，给出专业建议
 
@@ -97,13 +101,10 @@ mkdir -p .yy-dev/steering .yy-dev/specs
 
 ### Phase 4: 确认和收尾
 
-1. 展示 steering 摘要，问用户是否需要调整
-2. 问用户称呼：
-
-> "最后一个问题 — 我怎么称呼你？（默认叫你 baby 😄）"
-
-- 用户提供称呼 → 使用用户的
-- 默认/不回答 → 使用 "baby"
+1. 展示 steering 摘要，用多选题问用户是否需要调整
+2. 用多选题问用户称呼（Prefer multiple choice）：
+   - 选项："baby（默认）"、"自定义输入"
+   - 默认/不回答 → 使用 "baby"
 - 写入 `.yy-dev/steering/user.md`：
 
 ```markdown
