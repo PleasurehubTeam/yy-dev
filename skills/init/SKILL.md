@@ -34,6 +34,7 @@ You MUST create a task for each of these items and complete them in order:
 5. **生成 steering** — 读取模板和原则，生成三个文件到 `.yy-dev/steering/`
 6. **用户确认** — 展示 steering 摘要，确认是否需要调整
 7. **询问称呼** — 问用户希望怎么称呼他们，默认叫 "baby"，写入 `.yy-dev/steering/user.md`
+8. **生成 CLAUDE.md** — 在项目根目录生成 CLAUDE.md，引导 Claude 加载 steering 和使用工作流
 
 ## Process Flow
 
@@ -48,7 +49,10 @@ digraph init {
     "问第三个问题" [shape=box];
     "读取模板和原则" [shape=box];
     "生成 steering 文件" [shape=box];
-    "展示摘要等确认" [shape=doublecircle];
+    "展示摘要等确认" [shape=diamond];
+    "询问称呼" [shape=box];
+    "生成 CLAUDE.md" [shape=box];
+    "完成" [shape=doublecircle];
 
     "检查项目状态" -> "问第一个问题";
     "问第一个问题" -> "等待用户回答";
@@ -60,6 +64,10 @@ digraph init {
     "问第三个问题" -> "读取模板和原则";
     "读取模板和原则" -> "生成 steering 文件";
     "生成 steering 文件" -> "展示摘要等确认";
+    "展示摘要等确认" -> "询问称呼" [label="确认"];
+    "展示摘要等确认" -> "生成 steering 文件" [label="需调整"];
+    "询问称呼" -> "生成 CLAUDE.md";
+    "生成 CLAUDE.md" -> "完成";
 }
 ```
 
@@ -133,6 +141,46 @@ baby
 ```
 
 后续所有 yy-dev 工作流输出时，用这个称呼来称呼用户。
+
+### Step 8: 生成 CLAUDE.md
+
+在项目根目录生成 `CLAUDE.md`（如果已存在，追加 yy-dev 段落而不是覆盖）。
+
+**内容模板**（将 `{nickname}` 替换为用户称呼）：
+
+```markdown
+# yy-dev 规格驱动开发
+
+## 用户称呼
+称呼用户为：{nickname}
+
+## 项目记忆
+- Steering: `.yy-dev/steering/` — 加载全部文件作为项目上下文
+- Specs: `.yy-dev/specs/` — 查看活跃规格
+
+## 工作流
+
+### 自动工作流（端到端）
+- `/yy:feature "描述"` — 新功能（自动评估规模 → TDD 实现或生成计划）
+- `/yy:fix "描述"` — Bug 修复（TDD + 代码审查）
+- `/yy:investigate "描述"` — 问题调查（系统化诊断）
+- `/yy:steering` — 同步项目记忆
+- `/yy:status [spec]` — 查看规格状态
+
+### 正式流水线（逐步控制）
+- `/yy:spec-requirements <名称>` → `/yy:spec-design` → `/yy:spec-tasks` → `/yy:spec-impl`
+- `/yy:validate-gap` / `/yy:validate-design` / `/yy:validate-impl`
+
+## 开发规则
+- 自动工作流命令（feature/fix/investigate）会自动创建 spec 目录
+- 正式流水线需要已有 spec
+- 完成后自动代码审查 + 更新 changelog
+- 遵循用户指令，自主行动，仅在缺少关键信息时提问
+```
+
+**重要**：
+- 如果根目录已有 `CLAUDE.md`，在文件末尾追加以上内容（用 `---` 分隔）
+- 如果没有 `CLAUDE.md`，直接创建
 
 ## After Initialization
 
