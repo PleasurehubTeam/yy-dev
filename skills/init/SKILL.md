@@ -33,6 +33,7 @@ You MUST create a task for each of these items and complete them in order:
 4. **第三轮澄清（可选）** — 如果仍有重要不确定点，再问一个，否则跳过
 5. **生成 steering** — 读取模板和原则，生成三个文件到 `.yy-dev/steering/`
 6. **用户确认** — 展示 steering 摘要，确认是否需要调整
+7. **询问称呼** — 问用户希望怎么称呼他们，默认叫 "baby"，写入 `.yy-dev/steering/user.md`
 
 ## Process Flow
 
@@ -113,6 +114,25 @@ mkdir -p .yy-dev/steering .yy-dev/specs
 ### Step 6: 展示摘要并确认
 
 展示生成的 steering 摘要，问用户是否需要调整。
+
+### Step 7: 询问称呼
+
+在一切确认完毕后，最后问用户：
+
+> "最后一个问题 — 我怎么称呼你？（默认叫你 baby 😄）"
+
+- 如果用户提供了称呼 → 使用用户提供的
+- 如果用户说"默认"或直接回车/不回答 → 使用 "baby"
+- 将称呼写入 `.yy-dev/steering/user.md`：
+
+```markdown
+# 用户偏好
+
+## 称呼
+baby
+```
+
+后续所有 yy-dev 工作流输出时，用这个称呼来称呼用户。
 
 ## After Initialization
 

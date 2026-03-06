@@ -12,6 +12,17 @@ echo ""
 
 if [ -d "${STEERING_DIR}" ] && [ "$(ls -A "${STEERING_DIR}" 2>/dev/null)" ]; then
   # === Steering exists — inject full context ===
+  # Read user nickname
+  USER_FILE="${STEERING_DIR}/user.md"
+  if [ -f "$USER_FILE" ]; then
+    nickname=$(grep -A1 "## 称呼" "$USER_FILE" | tail -1 | tr -d '[:space:]')
+    if [ -n "$nickname" ]; then
+      echo "## 用户称呼"
+      echo "称呼用户为：**${nickname}**"
+      echo ""
+    fi
+  fi
+
   echo "## 项目路径"
   echo "- Steering: \`${STEERING_DIR}/\`"
   echo "- Specs: \`${SPECS_DIR}/\`"
