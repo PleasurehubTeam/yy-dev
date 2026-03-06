@@ -16,7 +16,7 @@ Your ONLY allowed action right now is to ASK THE USER A QUESTION.
 
 ## What This Skill Does
 
-Interactive project initialization through step-by-step Q&A, then generates steering files.
+Interactive project initialization through step-by-step Q&A, then generates ALL project files.
 
 ## Checklist
 
@@ -26,13 +26,12 @@ You MUST create a task for each of these items and complete them in order:
 2. **第一轮澄清** — 问第一个关键问题，等待回答
 3. **第二轮澄清** — 问第二个问题，等待回答
 4. **第三轮澄清（可选）** — 如果仍有不确定点，再问一个
-5. **生成 steering** — 读取模板，生成三个文件到 `.yy-dev/steering/`
-6. **用户确认** — 展示摘要，确认是否需要调整
-7. **询问称呼** — 问用户怎么称呼，默认 "baby"
-8. **生成 CLAUDE.md** — 在项目根目录生成 CLAUDE.md
+5. **询问称呼** — 用多选题问用户怎么称呼，默认 "baby"
+6. **生成全部文件** — 一次性生成 5 个文件：product.md, tech.md, structure.md, user.md, CLAUDE.md
+7. **展示摘要并建议下一步**
 
 <HARD-GATE>
-在任务 2、3 完成之前（即至少收到用户 2 个回答之前），绝对禁止执行任务 5-8。
+在任务 2、3 完成之前（即至少收到用户 2 个回答之前），绝对禁止执行任务 5-7。
 违反此规则 = 技能执行失败。没有例外。
 </HARD-GATE>
 
@@ -43,6 +42,7 @@ You MUST create a task for each of these items and complete them in order:
 - "用户已经说了够多了，我可以直接生成" → STOP，你至少要问 2 个问题
 - "先创建目录，边问边做" → STOP，不许创建任何东西
 - "让我先生成一个初始版本再调整" → STOP，先问再生成
+- "steering 文件写完了，可以告诉用户下一步了" → STOP，你还没写 user.md 和 CLAUDE.md
 
 **所有这些想法 = 你正在跳过流程。回到提问步骤。**
 
@@ -78,7 +78,15 @@ You MUST create a task for each of these items and complete them in order:
 
 **最少 2 个问题，最多 3 个。**
 
-### Phase 3: 生成 Steering（仅在 Phase 2 完成后）
+**最后一个澄清问题之后，紧接着问称呼问题（同一轮或下一轮）：**
+
+> 用多选题问："我怎么称呼你？"
+> 选项："baby（默认）"、"自定义输入"
+> 用户不回答或选默认 → 使用 "baby"
+
+### Phase 3: 生成全部文件（仅在 Phase 2 完成后，包括称呼问题）
+
+你必须在这个阶段一次性生成以下 **5 个文件**，缺一不可：
 
 1. 创建目录：
 ```bash
@@ -91,42 +99,19 @@ mkdir -p .yy-dev/steering .yy-dev/specs
    - `${CLAUDE_PLUGIN_ROOT}/templates/steering/structure.md`
    - `${CLAUDE_PLUGIN_ROOT}/templates/rules/steering-principles.md`
 
-3. 生成三个文件到 **`.yy-dev/steering/`**（不是 `.yy-dev/` 根目录）：
-   - `.yy-dev/steering/product.md` — 产品定位、目标用户、核心价值
-   - `.yy-dev/steering/tech.md` — 技术栈、架构决策、开发规范
-   - `.yy-dev/steering/structure.md` — 项目结构、目录组织、命名约定
-
-4. **所有内容必须是简体中文**
-5. **文件名必须是 product.md、tech.md、structure.md** — 不是其他名字
-
-### Phase 4: 确认 + 称呼 + CLAUDE.md（必须完成，不可跳过）
-
-<HARD-GATE>
-生成 steering 文件后，你还有 3 件事必须做。如果你跳过任何一件就提示"下一步"，你就失败了。
-必须按顺序完成：Step A → Step B → Step C → 然后才能进入 Phase 5。
-</HARD-GATE>
-
-**Step A: 展示摘要并确认**
-- 展示 steering 摘要表格
-- 用多选题问用户是否需要调整
-
-**Step B: 询问用户称呼**
-- 用多选题问用户怎么称呼（Prefer multiple choice）
-- 选项："baby（默认）"、"自定义输入"
-- 用户不回答或选默认 → 使用 "baby"
-- 将称呼写入 `.yy-dev/steering/user.md`：
+3. **文件 1/5** — `.yy-dev/steering/product.md` — 产品定位、目标用户、核心价值
+4. **文件 2/5** — `.yy-dev/steering/tech.md` — 技术栈、架构决策、开发规范
+5. **文件 3/5** — `.yy-dev/steering/structure.md` — 项目结构、目录组织、命名约定
+6. **文件 4/5** — `.yy-dev/steering/user.md` — 用户偏好（称呼）：
 
 ```markdown
 # 用户偏好
 
 ## 称呼
-baby
+{nickname}
 ```
 
-**Step C: 生成 CLAUDE.md**
-- 在项目根目录生成 `CLAUDE.md`（已存在则追加，用 `---` 分隔）
-- 将 `{nickname}` 替换为 Step B 中获得的实际称呼
-- 内容如下：
+7. **文件 5/5** — 项目根目录 `CLAUDE.md`（已存在则追加，用 `---` 分隔）：
 
 ```markdown
 # yy-dev 规格驱动开发
@@ -158,7 +143,15 @@ baby
 - 遵循用户指令，自主行动，仅在缺少关键信息时提问
 ```
 
-### Phase 5: 完成（仅在 Phase 4 的 Step A/B/C 全部完成后）
+**重要约束：**
+- 所有内容必须是简体中文
+- 文件名必须是 product.md、tech.md、structure.md、user.md — 不是其他名字
+- `{nickname}` 必须替换为 Phase 2 中获得的实际称呼
+- 必须生成全部 5 个文件才算完成此阶段
+
+### Phase 4: 展示摘要 + 建议下一步
+
+展示所有 5 个文件的摘要表格，然后建议下一步。
 
 **只建议以下真实存在的命令：**
 - `/yy:feature "描述"` — 直接开始实现功能
