@@ -10,6 +10,5 @@
   "license": "MIT",
   "keywords": ["spec-driven", "tdd", "steering", "workflow", "development"],
   "skills": "./skills/",
-  "commands": "./commands/",
-  "hooks": "./hooks/hooks.json"
+  "commands": "./commands/"
 }
